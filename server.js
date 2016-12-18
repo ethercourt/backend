@@ -7,6 +7,11 @@ var mongoOp     =   require("./model/mongo");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({"extended" : false}));
 
+// function isContract(addr) {
+//   let ethercourtContract = web3.eth.contract(contract.abi);
+//   let ethercourtContractInstance = ethercourtContract.at(addr);
+// }
+
 router.get("/",function(req,res){
     res.json({"error" : false, "message" : "It's works !"});
 });
@@ -28,18 +33,20 @@ router.route("/users")
         var db = new mongoOp();
         var response = {};
 
-        db.userEmail = req.body.adressUser;
-        db.userPassword =  req.body.adressContract;
-        db.save(function(err){
-        // save() will run insert() command of MongoDB.
-        // it will add new data in collection.
-            if(err) {
-                response = {"error" : true,"message" : "Error adding data"};
-            } else {
-                response = {"error" : false,"message" : "Data added"};
-            }
-            res.json(response);
-        });
+        db.adressUser = req.body.adressUser;
+        db.adressContract =  req.body.adressContract;
+        if (true) { // contract exixts
+          db.save(function(err){
+          // save() will run insert() command of MongoDB.
+          // it will add new data in collection.
+              if(err) {
+                  response = {"error" : true,"message" : "Error adding data"};
+              } else {
+                  response = {"error" : false,"message" : "Data added"};
+              }
+              res.json(response);
+          });
+        }
     });
 
 // parse application/json
