@@ -29,7 +29,6 @@ router.route("/users")
         });
     })
     .post(function(req,res){
-        console.log(req.body);
         var db = new mongoOp();
         var response = {};
 
