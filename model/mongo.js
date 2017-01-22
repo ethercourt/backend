@@ -4,8 +4,9 @@ mongoose.connect('mongodb://localhost:27017/ethercourt');
 var mongoSchema =   mongoose.Schema;
 // create schema
 var ethercourtSchema  = {
-    "adressUser" : String,
-    "adressContract" : String
+    "name": String,
+    "addressUser" : String,
+    "addressContract" : String
 };
 // create model if not exists.
 module.exports = mongoose.model('ethercourt', ethercourtSchema);

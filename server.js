@@ -14,9 +14,9 @@ app.use(bodyParser.urlencoded({"extended" : false}));
 
 var cors = require('cors');
 
-router.route("/twoPartyArbitrable/:adress_user")
+router.route("/twoPartyArbitrable/:address_user")
   .get(function(req, res) {
-    mongoOp.find({adressUser: req.params.adress_user}, function(err, contractsUser) {
+    mongoOp.find({addressUser: req.params.address_user}, function(err, contractsUser) {
       if (err)
         res.send(err);
       res.json(contractsUser);
@@ -34,9 +34,10 @@ router.route("/twoPartyArbitrable")
   .post(function(req,res) {
     var db = new mongoOp();
     var response = {};
-
-    db.adressUser = req.body.adressUser;
-    db.adressContract =  req.body.adressContract;
+    console.log(req.body);
+    db.name = req.body.name;
+    db.addressUser = req.body.addressUser;
+    db.addressContract =  req.body.addressContract;
     db.save(function(err){
       if(err) {
         response = {"error" : true,"message" : "Error adding data"};
@@ -74,7 +75,7 @@ router.route("/twoPartyArbitrable")
 // parse application/json
 app.use(bodyParser.json())
 
-app.use(cors({origin: 'http://localhost:3000'}));
+app.use(cors({}));
 app.use('/',router);
 
 app.all('/*', function(req, res, next) {
@@ -85,7 +86,7 @@ app.all('/*', function(req, res, next) {
 app.use(function (req, res, next) {
 
   // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8888');
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
 
   // Request methods you wish to allow
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
