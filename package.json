@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/codeforgeek/Node-and-mongo-tutorial",
   "dependencies": {
+    "@nodemailer/pro": "^1.0.0",
     "body-parser": "^1.13.3",
     "cors": "^2.8.1",
     "express": "^4.13.3",

@@ -4,9 +4,7 @@ var bodyParser  =   require("body-parser");
 var router      =   express.Router();
 var mongoOp     =   require("./model/mongo");
 const nodemailer = require('@nodemailer/pro');
-var config = require('./config');
-
-
+var config       = require('./config');
 
 
 app.use(bodyParser.json());
@@ -48,19 +46,19 @@ router.route("/twoPartyArbitrable")
     });
   });
 
-  router.route("/mailing-list")
-    .post(function(req,res) {
-      email = req.body.email;
       let transporter = nodemailer.createTransport({
           service: 'gmail',
           auth: config.mailAuth
       });
+  router.route("/mailing-list")
+    .post(function(req,res) {
+      email = req.body.email;
 
       let mailOptions = {
           from: '"Ethercourt.io" <no-reply@ethercourt.io>',
-          to: 'wagner.nicolas@live.fr, clemage@live.fr',
+          to: config.mailTo,
           subject: 'New subscriber mailing-list',
-          text: email + 'subsribe mailing-list ethercourt.io'
+          html: email + 'subsribe mailing-list ethercourt.io'
       };
 
       // send mail with defined transport object
@@ -69,6 +67,7 @@ router.route("/twoPartyArbitrable")
               return console.log(error);
           }
           console.log('Message %s sent: %s', info.messageId, info.response);
+	  transporter.close();
       });
     });
 
@@ -86,7 +85,7 @@ app.all('/*', function(req, res, next) {
 app.use(function (req, res, next) {
 
   // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Origin', '*');
 
   // Request methods you wish to allow
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
