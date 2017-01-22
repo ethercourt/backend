@@ -1,6 +1,4 @@
-var mongoose    =   require("mongoose");
-mongoose.connect('mongodb://localhost:27017/ethercourt');
-// create instance of Schema
+var mongoose     = require('mongoose');
 var mongoSchema =   mongoose.Schema;
 // create schema
 var ethercourtSchema  = {
