@@ -3,6 +3,11 @@ var app         =   express();
 var bodyParser  =   require("body-parser");
 var router      =   express.Router();
 var mongoOp     =   require("./model/mongo");
+const nodemailer = require('@nodemailer/pro');
+var config = require('./config');
+
+
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({"extended" : false}));
@@ -21,12 +26,12 @@ router.route("/twoPartyArbitrable/:adress_user")
 router.route("/twoPartyArbitrable")
   .get(function(req,res) {
     mongoOp.find({},function(err, contracts) {
-      if(err) 
-        res.send(err); 
+      if(err)
+        res.send(err);
       res.json(contracts);
     });
   })
-  .post(function(req,res){
+  .post(function(req,res) {
     var db = new mongoOp();
     var response = {};
 
@@ -41,6 +46,30 @@ router.route("/twoPartyArbitrable")
       res.json(response);
     });
   });
+
+  router.route("/mailing-list")
+    .post(function(req,res) {
+      email = req.body.email;
+      let transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: config.mailAuth
+      });
+
+      let mailOptions = {
+          from: '"Ethercourt.io" <no-reply@ethercourt.io>',
+          to: 'wagner.nicolas@live.fr, clemage@live.fr',
+          subject: 'New subscriber mailing-list',
+          text: email + 'subsribe mailing-list ethercourt.io'
+      };
+
+      // send mail with defined transport object
+      transporter.sendMail(mailOptions, function (error, info) {
+          if (error) {
+              return console.log(error);
+          }
+          console.log('Message %s sent: %s', info.messageId, info.response);
+      });
+    });
 
 // parse application/json
 app.use(bodyParser.json())
